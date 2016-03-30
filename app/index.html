@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html ng-app="myapp" ng-controller="MainCtrl" ng-init="getJson()">
+
+    <head>
+        <!-- 
+        ===========   Metas   ===========
+        -->
+        <meta charset="utf-8">
+        <title>Weather</title>
+
+        <!-- 
+        ===========   Style   ===========
+        -->
+
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Important: you'll only need one of the Bootcards CSS files below for every platform -->
+
+        <!-- Bootcards CSS for iOS: -->
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.0.0/css/bootcards-ios.min.css">
+
+        <!-- Bootcards CSS for Android: -->
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.0.0/css/bootcards-android.min.css">
+
+        <!-- Bootcards CSS for desktop: -->
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.0.0/css/bootcards-desktop.min.css">
+
+        <!-- Bootstrap and Bootcards JS -->
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.0.0/js/bootcards.min.js"></script>
+        
+        <!-- Font-Awesome Get Started -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+        <!-- 載入 angularjs -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
+        
+        <!-- 載入 jquery -->
+        <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+
+        <!-- 載入 mainCtrl.js -->
+        <script src="./mainCtrl.js"></script>
+
+    </head>
+
+    <body style="overflow: scroll">
+        <div class="bootcards-list" style="margin: 20px">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form style="padding: 4px">
+                        <div class="row">
+                            <div class="col-xs-9">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Search County..." ng-model="county">
+                                    <i class="fa fa-search"></i>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <a class="btn btn-primary btn-block" href="#" ng-click="findMe()">
+                                <i class="fa fa-map-marker"></i>
+                                    座標定位
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+          </div>
+        </div>
+
+        <div class="panel panel-default" style="margin: 20px;" ng-if="isFindMe">
+            <div class="panel-heading clearfix" style="background-color: #33b5e5;">
+                <h3 class="panel-title pull-left" style="color: #fff" ng-bind-template="最近位置 : {{weatherData[0].SiteName}} || ({{weatherData[0].County}})"></h3>
+            </div>
+            <div class="list-group">
+              <div class="list-group-item">
+                <i class="fa pull-left" ng-class="uvi({{weatherData[0].UVI}})"></i>
+                <h4 class="list-group-item-heading" ng-bind-template="紫外線指數 : {{weatherData[0].UVI}}"></h4>
+              </div>
+            </div>
+          <div class="panel-footer" style="background-color: #33b5e5;">
+            <small ng-bind-template="資料來源 : {{weatherData[0].PublishAgency}} || 發布時間 : {{weatherData[0].PublishTime}}"></small>
+          </div>
+        </div>
+
+        <div class="panel panel-default" style="margin: 20px" ng-repeat="weather in weatherData | filter:county">
+            <div class="panel-heading clearfix">
+                <h3 class="panel-title pull-left" ng-bind-template="{{weather.SiteName}} || ({{weather.County}})"></h3>
+            </div>
+            <div class="list-group">
+              <div class="list-group-item">
+                <i class="fa pull-left" ng-class="uvi({{weather.UVI}})"></i>
+                <h4 class="list-group-item-heading" ng-bind-template="紫外線指數 : {{weather.UVI}}"></h4>
+              </div>
+            </div>
+          <div class="panel-footer">
+            <small ng-bind-template="資料來源 : {{weather.PublishAgency}} || 發布時間 : {{weather.PublishTime}}"></small>
+          </div>
+        </div>
+    </body>
+</html>
